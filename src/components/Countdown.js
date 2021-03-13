@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { colors } from '../utils/colors';
 import { fontSizes, spacing } from '../utils/sizes';
@@ -11,6 +11,30 @@ export const Countdown = ({
   minutes = 20,
   isPaused,
 }) => {
+
+  const interval = React.useRef(null);
+
+  const countDown = () => {
+    setMillis((time) => {
+      if(time === 0) {
+        // do more stuff here
+        return time;
+      }
+      const timeLeft = time - 1000;
+      // report the progress 
+      return timeLeft;
+    })
+  }
+
+  useEffect(() => {
+    if(isPaused) {
+      return;
+    }
+
+    interval.current = setInterval(countDown, 1000);
+    return () => clearInterval(interval.current)
+  }, [isPaused])
+
   const [millis, setMillis] = useState(minutestoMillis(minutes));
 
   const minute = Math.floor(millis / 1000 / 60) % 60;
