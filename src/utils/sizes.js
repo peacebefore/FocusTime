@@ -17,6 +17,7 @@ export const spacing = {
 }
 
 export const generalSizes = {
-  md: 50,
+  sm: 50,
+  md: 75,
   lg: 125
 }

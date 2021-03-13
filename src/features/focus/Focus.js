@@ -8,20 +8,20 @@ import { colors } from './src/utils/colors';
 export const Focus = ({ addSubject }) => {
   const [tempItem, setTempItem] = useState("gardening");
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}> What would you like to focus on? </Text>
-        <View style={styles.inputContainer}>
-          <TextInput style={{ flex: 1, marginRight: spacing.md }} 
-            onSubmitEditing={
+    <View style = { styles.container }>
+      <View style = { styles.titleContainer }>
+        <Text style = { styles.title }> What would you like to focus on? </Text>
+        <View style = { styles.inputContainer }>
+          <TextInput style = {{ flex: 1, marginRight: spacing.md }} 
+            onSubmitEditing = {
               ({ nativeEvent }) => {
                 setTempItem(nativeEvent.text)
               }}
           />
           <RoundedButton 
-            size={generalSizes.md}
-            title='+' 
-            onPress={() => { addSubject(tempItem) }} />
+            size = { generalSizes.sm }
+            title = '+' 
+            onPress = {() => { addSubject(tempItem) }} />
         </View>
       </View>
     </View>
