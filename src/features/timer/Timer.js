@@ -4,7 +4,7 @@ import { ProgressBar } from 'react-native-paper';
 import { useKeepAwake } from 'expo-keep-awake';
 
 import { colors } from '../../utils/colors';
-import { spacing } from '../../utils/sizes';
+import { generalSizes, spacing } from '../../utils/sizes';
 import { Countdown } from '../../components/Countdown';
 import { RoundedButton } from '../../components/RoundedButton';
 
@@ -12,7 +12,7 @@ import { Timing } from './Timing';
 
 const DEFAULT_TIME = 0.1;
 
-export const Timer = ({ focusSubject, onTimerEnd }) => {
+export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
   useKeepAwake();
 
   const [minutes, setMinutes] = useState(DEFAULT_TIME);
@@ -77,6 +77,12 @@ export const Timer = ({ focusSubject, onTimerEnd }) => {
           <RoundedButton title = 'Start' onPress = {() => setIsStarted(true)} />
         )}
       </View>
+      <View style = { styles.clearSubject } >
+        <RoundedButton 
+          title = '-'
+          size = { generalSizes.sm } 
+          onPress = {() => clearSubject()} />
+      </View>
     </View>
   );
 };
@@ -105,5 +111,9 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  clearSubject: {
+    paddingBottom: spacing.lg,
+    paddingLeft: spacing.lg
   }
 })
