@@ -16,7 +16,8 @@
     "react-native-web": "~0.13.12",
     "expo-constants": "~9.3.3",
     "react-native-paper": "3.6.0",
-    "expo-keep-awake": "~9.0.0"
+    "expo-keep-awake": "~9.0.0",
+    "@react-native-async-storage/async-storage": "*"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
