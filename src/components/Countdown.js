@@ -22,11 +22,9 @@ export const Countdown = ({
     setMillis((time) => {
       if(time === 0) {
         clearInterval(interval.current);
-        onEnd();
         return time;
       }
       const timeLeft = time - 1000;
-      onProgress(timeLeft / minutestoMillis(minutes));
       return timeLeft;
     })
   }
@@ -34,6 +32,13 @@ export const Countdown = ({
   useEffect(() => {
     setMillis(minutestoMillis(minutes))
   }, [minutes])
+
+  useEffect(() => {
+    onProgress(millis / minutestoMillis(minutes));
+    if(millis === 0) {
+      onEnd();
+    }
+  }, [millis]);
 
   useEffect(() => {
     if(isPaused) {
