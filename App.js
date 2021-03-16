@@ -1,29 +1,15 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StyleSheet, View, AsyncStorage } from 'react-native';
 
+import { uuidv4 } from './src/utils/uuid';
+import { Timer } from './src/features/timer/Timer';
 import { Focus } from './src/features/focus/Focus';
 import { FocusHistory } from './src/features/focus/FocusHistory';
-import { Timer } from './src/features/timer/Timer';
-import { colors } from './src/utils/colors';
-import { spacing } from './src/utils/sizes';
-
-const STATUSES = {
-  COMPLETE: 1,
-  CANCELLED: 2
-} 
 
 export default function App() {
   const [focusSubject, setFocusSubject] = useState(null);
   const [focusHistory, setFocusHistory] = useState([]);
-
-  const addFocusHistorySubjectWithStatus = (subject, status) => {
-    setFocusHistory([...focusHistory, { key: String(focusHistory.length + 1), subject, status }]);
-  };
-
-  const onClear = () => {
-    setFocusHistory([]);
-  };
 
   const saveFocusHistory = async () => {
     try {
@@ -32,12 +18,11 @@ export default function App() {
       console.log(e);
     }
   };
-
   const loadFocusHistory = async () => {
     try {
       const history = await AsyncStorage.getItem('focusHistory');
 
-      if(history && JSON.parse(history).length) {
+      if (history && JSON.parse(history).length) {
         setFocusHistory(JSON.parse(history));
       }
     } catch (e) {
@@ -47,7 +32,7 @@ export default function App() {
 
   useEffect(() => {
     loadFocusHistory();
-  },[])
+  }, []);
 
   useEffect(() => {
     saveFocusHistory();
@@ -55,24 +40,31 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="light" />
       {focusSubject ? (
-        <Timer 
-          focusSubject = { focusSubject } 
-          onTimerEnd = { () => { 
-            addFocusHistorySubjectWithStatus(focusSubject, STATUSES.COMPLETE);
-            setFocusSubject(null); 
+        <Timer
+          subject={focusSubject}
+          clearSubject={() => {
+            setFocusHistory([
+              ...focusHistory,
+              { subject: focusSubject, status: 0, key: uuidv4() },
+            ]);
+            setFocusSubject(null);
           }}
-          clearSubject = { () => {
-            addFocusHistorySubjectWithStatus(focusSubject, STATUSES.CANCELLED);
+          onTimerEnd={() => {
+            setFocusHistory([
+              ...focusHistory,
+              { subject: focusSubject, status: 1, key: uuidv4() },
+            ]);
             setFocusSubject(null);
           }}
         />
       ) : (
-        <View style = {{ flex: 1 }}  >
-          <Focus addSubject={setFocusSubject}/>
-          <FocusHistory 
-            focusHistory = { focusHistory }
-            onClear = { onClear } 
+        <View style={styles.focusContainer}>
+          <Focus focusHistory={focusHistory} addSubject={setFocusSubject} />
+          <FocusHistory
+            focusHistory={focusHistory}
+            setFocusHistory={setFocusHistory}
           />
         </View>
       )}
@@ -83,7 +75,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'ios' ? spacing.md : spacing.lg,
-    backgroundColor: colors.darkBlue,
   },
+  focusContainer: { flex: 1, backgroundColor: '#252250' },
 });

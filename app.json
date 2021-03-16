@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "focustime",
-    "slug": "snack-d6ed6488-c4e8-4b59-82bd-6fd4f5afdc9d",
+    "name": "FocusTime",
+    "slug": "FocusTime",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,12 +17,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "web": {
